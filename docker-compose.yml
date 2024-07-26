@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  dns-updater:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dns-updater
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    environment:
+      - DOMAIN=${DOMAIN}
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - CLOUDFLARE_ZONE_ID=${CLOUDFLARE_ZONE_ID}
+      - RECORD_NAME=${RECORD_NAME}
+    restart: unless-stopped
+    working_dir: /app
+    command: ["/app/run.sh"]
